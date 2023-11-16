@@ -1,5 +1,5 @@
 <template>
-  <div class="home">This is an home page</div>
+  <div class="about">管理员可见</div>
 </template>
 
 <script lang="ts"></script>
