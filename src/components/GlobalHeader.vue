@@ -33,7 +33,6 @@ import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import checkAccess from "@/access/checkAccess";
-import ACCESS_ENUM from "@/access/accessEnum";
 
 const router = useRouter();
 //默认主页
@@ -50,12 +49,12 @@ const doMenuClick = (key: string) => {
 };
 const store = useStore();
 
-setTimeout(() => {
-  store.dispatch("user/getLoginUser", {
-    userName: "Mouth",
-    userRole: ACCESS_ENUM.ADMIN,
-  });
-}, 3000);
+// setTimeout(() => {
+//   store.dispatch("user/getLoginUser", {
+//     userName: "Mouth",
+//     userRole: ACCESS_ENUM.ADMIN,
+//   });
+// }, 3000);
 
 const visibleRoutes = computed(() => {
   return routes.filter((item, index) => {
