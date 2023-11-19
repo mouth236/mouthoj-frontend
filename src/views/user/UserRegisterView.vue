@@ -26,7 +26,7 @@
           type="primary"
           html-type="register"
           class="registerButton"
-          @click="handleRegister"
+          @click="handleRegister as any"
           >注册
         </a-button>
       </a-form-item>

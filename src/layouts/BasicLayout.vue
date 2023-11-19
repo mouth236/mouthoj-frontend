@@ -22,7 +22,7 @@
 }
 
 #basicLayout .content {
-  background: linear-gradient(to right, #bbb, #fff);
+  background: #efefef;
   margin-bottom: 16px;
   padding: 20px;
 }
