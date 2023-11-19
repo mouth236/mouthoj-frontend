@@ -1,32 +1,3 @@
-<template>
-  <a-row id="globalHeader" align="center" :wrap="false">
-    <a-col flex="auto">
-      <a-menu
-        mode="horizontal"
-        :selected-keys="selectKeys"
-        @menu-item-click="doMenuClick"
-      >
-        <a-menu-item
-          key="0"
-          :style="{ padding: 0, marginRight: '38px' }"
-          disabled
-        >
-          <div class="title-bar">
-            <img class="logo" src="../assets/logo.jpg" />
-            <div class="title">在线编程Oj</div>
-          </div>
-        </a-menu-item>
-        <a-menu-item v-for="item in visibleRoutes" :key="item.path">
-          {{ item.name }}
-        </a-menu-item>
-      </a-menu>
-    </a-col>
-    <a-col flex="100px">
-      <div>{{ store.state.user?.loginUser?.userName ?? "未登录" }}</div>
-    </a-col>
-  </a-row>
-</template>
-
 <script setup lang="ts">
 import { routes } from "../router/routes";
 import { useRouter } from "vue-router";
@@ -71,6 +42,34 @@ const visibleRoutes = computed(() => {
   });
 });
 </script>
+<template>
+  <a-row id="globalHeader" align="center" :wrap="false">
+    <a-col flex="auto">
+      <a-menu
+        mode="horizontal"
+        :selected-keys="selectKeys"
+        @menu-item-click="doMenuClick"
+      >
+        <a-menu-item
+          key="0"
+          :style="{ padding: 0, marginRight: '38px' }"
+          disabled
+        >
+          <div class="title-bar">
+            <img class="logo" src="../assets/logo.jpg" />
+            <div class="title">在线编程Oj</div>
+          </div>
+        </a-menu-item>
+        <a-menu-item v-for="item in visibleRoutes" :key="item.path">
+          {{ item.name }}
+        </a-menu-item>
+      </a-menu>
+    </a-col>
+    <a-col flex="100px">
+      <div>{{ store.state.user?.loginUser?.userName ?? "未登录" }}</div>
+    </a-col>
+  </a-row>
+</template>
 
 <style scoped>
 .title-bar {

@@ -18,12 +18,16 @@
       <a-form-item class="buttonContainer">
         <a-button
           type="primary"
-          html-type="submit"
+          html-type="login"
           class="loginButton"
-          @click="handleSubmit"
+          @click="handleLogin"
           >登录
         </a-button>
-        <a-button type="primary" html-type="register" class="registerButton"
+        <a-button
+          type="primary"
+          html-type="register"
+          class="registerButton"
+          @click="handleRegister"
           >注册
         </a-button>
       </a-form-item>
@@ -43,7 +47,7 @@ const form = reactive({
   userAccount: "",
   userPassword: "",
 } as UserLoginRequest);
-const handleSubmit = async () => {
+const handleLogin = async () => {
   const res = await UserControllerService.userLoginUsingPost(form);
   //登录成功跳转到主页
   if (res.code === 0) {
@@ -55,6 +59,9 @@ const handleSubmit = async () => {
   } else {
     message.error("登录失败" + res.message);
   }
+};
+const handleRegister = async (): Promise<void> => {
+  await router.push("/user/register");
 };
 </script>
 <style scoped>
