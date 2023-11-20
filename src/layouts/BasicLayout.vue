@@ -22,13 +22,13 @@
 }
 
 #basicLayout .content {
-  background: #efefef;
+  background: #f8fdf7;
   margin-bottom: 16px;
   padding: 20px;
 }
 
 #basicLayout .footer {
-  background: #efefef;
+  background: #f8fdf7;
   padding: 16px;
   position: sticky;
   bottom: 0;

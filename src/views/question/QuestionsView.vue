@@ -1,5 +1,18 @@
 <template>
-  <div id="manageQuestionView">
+  <div id="questionsView">
+    <a-form :model="searchParams" layout="inline">
+      <a-form-item field="title" label="名称" style="min-width: 240px">
+        <a-input v-model="searchParams.title" placeholder="请输入名称" />
+      </a-form-item>
+      <a-form-item field="tags" label="标签" style="min-width: 240px">
+        <a-input-tag v-model="searchParams.tags" placeholder="请输入标签" />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" @click="doSubmit as any">搜索</a-button>
+      </a-form-item>
+    </a-form>
+    <a-divider size="0" />
+
     <a-table
       :ref="tableRef"
       :columns="columns"
@@ -11,7 +24,6 @@
         total,
       }"
       @page-change="onPageChange as any"
-      class="form"
     >
       <template #tags="{ record }">
         <a-space wrap>
@@ -27,13 +39,15 @@
           }% (${record.acceptedNum}/${record.submitNum})`
         }}
       </template>
+
       <template #createTime="{ record }">
         {{ moment(record.createTime).format("YYYY-MM-DD") }}
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="doUpdate(record)"> 修改</a-button>
-          <a-button status="danger" @click="doDelete(record)">删除</a-button>
+          <a-button type="primary" @click="toQuestionPage(record)">
+            做题
+          </a-button>
         </a-space>
       </template>
     </a-table>
@@ -48,21 +62,22 @@ import {
   QuestionControllerService,
 } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
-import * as querystring from "querystring";
 import { useRouter } from "vue-router";
-import moment from "moment/moment";
-
+import moment from "moment";
+const router = useRouter();
 const tableRef = ref();
 
 const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref({
+  title: "",
+  tags: [],
   pageSize: 6,
   current: 1,
 });
 
 const loadData = async () => {
-  const res = await QuestionControllerService.listQuestionByPageUsingPost(
+  const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
     searchParams.value
   );
   if (res.code === 0) {
@@ -91,47 +106,26 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "id",
+    title: "题号",
     dataIndex: "id",
   },
   {
-    title: "标题",
+    title: "题目名称",
     dataIndex: "title",
   },
   {
-    title: "内容",
-    dataIndex: "content",
-  },
-  {
     title: "标签",
-    dataIndex: "tags",
-  },
-  {
-    title: "答案",
-    dataIndex: "answer",
+    slotName: "tags",
   },
   {
     title: "通过率",
     slotName: "passRate",
   },
   {
-    title: "判题配置",
-    dataIndex: "judgeConfig",
-  },
-  {
-    title: "判题用例",
-    dataIndex: "judgeCase",
-  },
-  {
-    title: "用户id",
-    dataIndex: "userId",
-  },
-  {
     title: "创建时间",
-    dataIndex: "createTime",
+    slotName: "createTime",
   },
   {
-    title: "操作",
     slotName: "optional",
   },
 ];
@@ -142,34 +136,28 @@ const onPageChange = (page: number) => {
     current: page,
   };
 };
-
-const doDelete = async (question: Question) => {
-  const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.id,
-  });
-  if (res.code === 0) {
-    message.success("删除成功");
-    loadData();
-  } else {
-    message.error("删除失败");
-  }
-};
-
-const router = useRouter();
-
-const doUpdate = (question: Question) => {
+/**
+ * 跳转到做题页面
+ * @param question
+ */
+const toQuestionPage = (question: Question) => {
   router.push({
-    path: "/update/question",
-    query: {
-      id: question.id,
-    },
+    path: `/view/question/${question.id}`,
   });
+};
+/**
+ * 确认搜索，重新加载数据
+ */
+const doSubmit = () => {
+  // 这里需要重置搜索页号
+  searchParams.value = {
+    ...searchParams.value,
+    current: 1,
+  };
 };
 </script>
 
 <style scoped>
-#manageQuestionView {
-  max-width: 1280px;
-  margin: 0 auto;
+#questionsView {
 }
 </style>
